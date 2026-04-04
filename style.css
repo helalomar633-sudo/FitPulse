@@ -20,10 +20,9 @@ body {
 }
 
 h1 { color: #32cd32; }
-
 .input-group { display: flex; gap: 10px; }
 
-input {
+input[type="text"], input[type="number"], input[type="password"] {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
@@ -34,23 +33,70 @@ input {
     box-sizing: border-box;
 }
 
-input:focus { border-color: #32cd32; outline: none; }
-
+/* --- تطوير شكل علامة الصح --- */
 .selection-group {
     display: flex;
     justify-content: space-around;
     background: #262626;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
     margin: 10px 0;
 }
 
 .option-container {
+    display: block;
+    position: relative;
+    padding-right: 35px; /* مساحة للعلامة */
     cursor: pointer;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    user-select: none;
+}
+
+/* إخفاء دائرة الراديو الأصلية */
+.option-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* المربع/الدائرة اللي هيظهر فيها الصح */
+.checkmark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #444;
+    border-radius: 4px; /* شكل مربع بزوايا دائرية */
+    transition: 0.3s;
+}
+
+/* لون الخلفية لما يختار */
+.option-container input:checked ~ .checkmark {
+    background-color: #32cd32;
+}
+
+/* رسم علامة الصح نفسها (تكون مخفية) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* إظهار علامة الصح لما يختار */
+.option-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* تصميم شكل علامة الصح (الخطين المائلين) */
+.option-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
 }
 
 .btn-submit {
@@ -62,4 +108,9 @@ input:focus { border-color: #32cd32; outline: none; }
     font-weight: bold;
     cursor: pointer;
     margin-top: 15px;
+    transition: 0.3s;
 }
+
+.btn-submit:hover { background: #28a428; }
+
+.hidden { display: none; }
