@@ -3,128 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitPulse - نظام الدخول</title>
+    <title>FitPulse Pro - لوحة التحكم</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .hidden { display: none; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .stat-box { background: #262626; padding: 15px; border-radius: 10px; border-bottom: 3px solid #32cd32; }
-        .advice-box { background: #32cd32; color: black; padding: 15px; border-radius: 10px; margin-top: 20px; font-weight: bold; }
-        .toggle-link { color: #32cd32; cursor: pointer; text-decoration: underline; font-size: 14px; display: block; margin-top: 15px; }
-    </style>
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل حساب جديد (لأول مرة) -->
-    <div class="signup-card" id="signup-section">
-        <h1>إنشاء حساب جديد</h1>
-        <form id="regForm">
-            <div class="input-group">
-                <input type="text" id="reg-fname" placeholder="الاسم الأول" required>
-                <input type="text" id="reg-lname" placeholder="اسم العائلة" required>
-            </div>
-            <div class="input-group">
-                <input type="number" id="reg-weight" placeholder="الوزن (كجم)" required>
-                <input type="number" id="reg-height" placeholder="الطول (سم)" required>
-            </div>
-            <label>مكان التمرين والهدف:</label>
-            <div class="selection-group">
-                <label class="option-container"> جيم <input type="radio" name="place" value="جيم" required> <span class="checkmark"></span></label>
-                <label class="option-container"> بيت <input type="radio" name="place" value="بيت"> <span class="checkmark"></span></label>
-            </div>
-            <input type="password" id="reg-pass" placeholder="اختر كلمة سر (8 خانات)" required minlength="8">
-            <button type="submit" class="btn-submit">تسجيل وحفظ البيانات</button>
-            <span class="toggle-link" onclick="showLogin()">لديك حساب بالفعل؟ سجل دخولك</span>
-        </form>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <h2>FitPulse 💪</h2>
+        <div class="menu-item active" onclick="openTab(event, 'workouts')">1. التمارين</div>
+        <div class="menu-item" onclick="openTab(event, 'nutrition')">2. حاسبة السعرات</div>
+        <div class="menu-item" onclick="openTab(event, 'progress')">3. التقدم</div>
+        <div class="menu-item" onclick="openTab(event, 'reminders')">4. تذكيرات</div>
+        <div class="menu-item" onclick="openTab(event, 'library')">5. المكتبة المحلية</div>
+        <div class="menu-item" onclick="openTab(event, 'profile')">6. الملف الشخصي</div>
+        <div class="menu-item" onclick="openTab(event, 'settings')">7. الإعدادات</div>
     </div>
 
-    <!-- 2. شاشة تسجيل الدخول (للمشتركين) -->
-    <div class="signup-card hidden" id="login-section">
-        <h1>تسجيل دخول</h1>
-        <form id="loginForm">
-            <input type="text" id="login-fname" placeholder="الاسم الأول" required>
-            <input type="password" id="login-pass" placeholder="كلمة السر" required>
-            <button type="submit" class="btn-submit">دخول</button>
-            <span class="toggle-link" onclick="showSignup()">ليس لديك حساب؟ اشترك الآن</span>
-        </form>
-    </div>
-
-    <!-- 3. لوحة تحكم البطل -->
-    <div id="dashboard" class="signup-card hidden">
-        <h2 id="user-greeting"></h2>
-        <div class="stats-grid">
-            <div class="stat-box"> <small>الوزن</small> <div id="show-weight"></div> </div>
-            <div class="stat-box"> <small>الطول</small> <div id="show-height"></div> </div>
+    <!-- المحتوى -->
+    <div class="main-content">
+        
+        <!-- قسم التمارين -->
+        <div id="workouts" class="tab-content active">
+            <h1>تمارين اليوم (تنشيف/ضخامة)</h1>
+            <div class="card">
+                <h3>تمرين الضغط (Pushups) ⭐⭐⭐⭐⭐</h3>
+                <div class="video-container">
+                    <!-- فيديو يوتيوب ينتهي عند 50 ثانية -->
+                    <iframe src="https://www.youtube.com/embed/iodG8K6UToQ?end=50" frameborder="0"></iframe>
+                </div>
+                <div id="timer-label" style="text-align: center; font-weight: bold;">جاهز؟</div>
+                <div class="timer-display" id="timer">60</div>
+                <button class="btn-submit" onclick="startWorkout()">ابدأ المجموعة الآن 🚀</button>
+                <p id="set-count" style="text-align: center; margin-top: 10px;">المجموعة: 1 / 4</p>
+            </div>
         </div>
-        <div id="advice" class="advice-box"></div>
-        <button class="btn-submit" style="background: #444;" onclick="logout()">تسجيل خروج</button>
+
+        <!-- حاسبة السعرات -->
+        <div id="nutrition" class="tab-content">
+            <h1>حاسبة السعرات الذكية 🍎</h1>
+            <div class="card">
+                <input type="number" id="w" placeholder="الوزن (كجم)">
+                <input type="number" id="h" placeholder="الطول (سم)">
+                <input type="number" id="a" placeholder="العمر">
+                <button class="btn-submit" onclick="calcCalories()">احسب احتياجي اليومي</button>
+                <h2 id="res" style="text-align: center; margin-top: 20px; color: var(--primary-color);"></h2>
+            </div>
+        </div>
+
+        <!-- الإعدادات (الوضع الليلي) -->
+        <div id="settings" class="tab-content">
+            <h1>الإعدادات ⚙️</h1>
+            <div class="card">
+                <h3>تخصيص المظهر</h3>
+                <button class="btn-submit" onclick="toggleTheme()">تبديل الوضع (ليلي / نهاري)</button>
+            </div>
+        </div>
+
+        <!-- الأقسام الباقية (للعرض فقط الآن) -->
+        <div id="progress" class="tab-content"><h1>📈 التقدم: قريباً</h1></div>
+        <div id="reminders" class="tab-content"><h1>🔔 تذكيرات: قريباً</h1></div>
+        <div id="library" class="tab-content"><h1>📚 المكتبة المحلية: فيديوهات مخزنة</h1></div>
+        <div id="profile" class="tab-content"><h1>👤 الملف الشخصي: بياناتك هنا</h1></div>
+
     </div>
 
     <script>
-        // دالة لعرض شاشة الدخول
-        function showLogin() {
-            document.getElementById('signup-section').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
+        // التبديل بين القوائم
+        function openTab(evt, name) {
+            let i, content, items;
+            content = document.getElementsByClassName("tab-content");
+            for (i = 0; i < content.length; i++) content[i].classList.remove("active");
+            items = document.getElementsByClassName("menu-item");
+            for (i = 0; i < items.length; i++) items[i].classList.remove("active");
+            document.getElementById(name).classList.add("active");
+            evt.currentTarget.classList.add("active");
         }
 
-        // دالة لعرض شاشة الاشتراك
-        function showSignup() {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('signup-section').classList.remove('hidden');
-        }
-
-        // 1. معالجة الاشتراك الجديد وحفظ البيانات
-        document.getElementById('regForm').onsubmit = function(e) {
-            e.preventDefault();
-            const userData = {
-                fname: document.getElementById('reg-fname').value,
-                lname: document.getElementById('reg-lname').value,
-                weight: document.getElementById('reg-weight').value,
-                height: document.getElementById('reg-height').value,
-                pass: document.getElementById('reg-pass').value
-            };
-            
-            // حفظ الكائن في ذاكرة المتصفح
-            localStorage.setItem('user_' + userData.fname, JSON.stringify(userData));
-            alert("تم إنشاء حسابك بنجاح يا " + userData.fname);
-            showLogin();
-        };
-
-        // 2. معالجة تسجيل الدخول
-        document.getElementById('loginForm').onsubmit = function(e) {
-            e.preventDefault();
-            const name = document.getElementById('login-fname').value;
-            const pass = document.getElementById('login-pass').value;
-            
-            const storedData = localStorage.getItem('user_' + name);
-            
-            if (storedData) {
-                const user = JSON.parse(storedData);
-                if (user.pass === pass) {
-                    showDashboard(user);
-                } else {
-                    alert("كلمة السر خاطئة!");
+        // منطق التايمر (تمرين 60 + راحة 20)
+        let time = 60; let set = 1; let resting = false; let interval;
+        function startWorkout() {
+            clearInterval(interval);
+            interval = setInterval(() => {
+                if (time <= 0) {
+                    if (!resting && set < 4) {
+                        resting = true; time = 20;
+                        document.getElementById('timer').style.color = "#ffcc00";
+                        document.getElementById('timer-label').innerText = "وقت راحة (استعد)";
+                    } else if (resting) {
+                        resting = false; set++; time = 60;
+                        document.getElementById('timer').style.color = "#32cd32";
+                        document.getElementById('timer-label').innerText = "المجموعة رقم " + set;
+                        document.getElementById('set-count').innerText = "المجموعة: " + set + " / 4";
+                    } else {
+                        clearInterval(interval); alert("بطل! خلصت التمرين");
+                        resetAll(); return;
+                    }
                 }
-            } else {
-                alert("المستخدم غير موجود، يرجى الاشتراك أولاً.");
-            }
-        };
-
-        // 3. عرض لوحة التحكم
-        function showDashboard(user) {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('signup-section').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            
-            document.getElementById('user-greeting').innerText = "أهلاً بك يا بطل، " + user.fname;
-            document.getElementById('show-weight').innerText = user.weight + " كجم";
-            document.getElementById('show-height').innerText = user.height + " سم";
-            document.getElementById('advice').innerText = "استمر في التدريب، هدفك يقترب!";
+                document.getElementById('timer').innerText = time;
+                time--;
+            }, 1000);
         }
 
-        function logout() {
-            location.reload();
+        function resetAll() { time=60; set=1; resting=false; document.getElementById('timer').innerText="60"; }
+
+        // حاسبة السعرات
+        function calcCalories() {
+            let weight = document.getElementById('w').value;
+            let height = document.getElementById('h').value;
+            let age = document.getElementById('a').value;
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            document.getElementById('res').innerText = "تحتاج " + Math.round(bmr * 1.2) + " سعرة حرارية يومياً.";
         }
+
+        // الوضع الليلي
+        function toggleTheme() { document.body.classList.toggle('light-mode'); }
     </script>
 </body>
 </html>
