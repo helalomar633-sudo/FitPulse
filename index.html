@@ -5,68 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitPulse - انضم إلينا</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* إضافة بسيطة لإخفاء العناصر */
+        .hidden { display: none; }
+        #welcomeMessage { text-align: center; margin-top: 50px; }
+    </style>
 </head>
 <body>
 
-    <div class="signup-card">
+    <div class="signup-card" id="mainCard">
         <h1>إنشاء حساب جديد</h1>
         <p>ادخل بياناتك لبدء رحلة التغيير</p>
 
-        <form id="registrationForm">
-            <!-- 1 & 2: الاسم واسم العائلة -->
+        <form id="registrationForm" onsubmit="handleSignup(event)">
             <div class="input-group">
-                <input type="text" placeholder="الاسم الأول" required>
+                <input type="text" id="firstName" placeholder="الاسم الأول" required>
                 <input type="text" placeholder="اسم العائلة" required>
             </div>
 
-            <!-- 3 & 4: الوزن والطول -->
             <div class="input-group">
                 <input type="number" placeholder="الوزن (كجم)" required>
                 <input type="number" placeholder="الطول (سم)" required>
             </div>
 
-            <!-- 5: مكان التمرين (قائمة اختيار) -->
             <label>مكان التمرين:</label>
             <div class="selection-group">
-                <label class="option-container">
-                    الجيم
-                    <input type="radio" name="place" value="gym">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="option-container">
-                    البيت
-                    <input type="radio" name="place" value="home">
-                    <span class="checkmark"></span>
-                </label>
+                <label class="option-container"> الجيم <input type="radio" name="place" value="gym" required> <span class="checkmark"></span> </label>
+                <label class="option-container"> البيت <input type="radio" name="place" value="home"> <span class="checkmark"></span> </label>
             </div>
 
-            <!-- 6: الهدف (قائمة اختيار) -->
             <label>هدفك الرياضي:</label>
             <div class="selection-group">
-                <label class="option-container">
-                    تخسيس
-                    <input type="radio" name="goal" value="loss">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="option-container">
-                    تضخيم
-                    <input type="radio" name="goal" value="bulk">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="option-container">
-                    لياقة
-                    <input type="radio" name="goal" value="fitness">
-                    <span class="checkmark"></span>
-                </label>
+                <label class="option-container"> تخسيس <input type="radio" name="goal" value="loss" required> <span class="checkmark"></span> </label>
+                <label class="option-container"> تضخيم <input type="radio" name="goal" value="bulk"> <span class="checkmark"></span> </label>
+                <label class="option-container"> لياقة <input type="radio" name="goal" value="fitness"> <span class="checkmark"></span> </label>
             </div>
 
-            <!-- 7: كلمة السر -->
-            <input type="password" id="password" placeholder="كلمة السر (حروف وأرقام)" required 
-                   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" title="يجب أن تحتوي على 8 أحرف على الأقل، تشمل حروفاً وأرقاماً">
+            <!-- تعديل كلمة السر لتكون سهلة (8 خانات أي نوع) -->
+            <input type="password" placeholder="كلمة السر (8 خانات أو أكثر)" required minlength="8">
 
             <button type="submit" class="btn-submit">إنشاء الحساب</button>
         </form>
     </div>
+
+    <!-- صفحة الترحيب التي ستظهر بعد الضغط على الزر -->
+    <div id="welcomePage" class="signup-card hidden">
+        <h1 id="welcomeText"></h1>
+        <p>تم تجهيز خطتك بناءً على بياناتك.</p>
+        <button class="btn-submit" onclick="location.reload()">تسجيل خروج</button>
+    </div>
+
+    <script>
+        function handleSignup(event) {
+            event.preventDefault(); // منع الصفحة من التحديث
+            const name = document.getElementById('firstName').value;
+            
+            // إخفاء الكارت القديم وإظهار كارت الترحيب
+            document.getElementById('mainCard').classList.add('hidden');
+            document.getElementById('welcomePage').classList.remove('hidden');
+            
+            // وضع اسم المستخدم في رسالة الترحيب
+            document.getElementById('welcomeText').innerText = "عاش يا " + name + "! 💪";
+        }
+    </script>
 
 </body>
 </html>
