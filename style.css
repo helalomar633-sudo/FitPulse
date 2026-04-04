@@ -13,14 +13,27 @@ body {
     background: #1a1a1a;
     padding: 30px;
     border-radius: 15px;
-    border: 1px solid #32cd32;
-    width: 100%;
+    /* تغيير لون الحدود للذهبي */
+    border: 1px solid #d4af37; 
+    width: 90%;
     max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* إضافة ظل خفيف للفخامة */
 }
 
-h1 { color: #32cd32; }
-.input-group { display: flex; gap: 10px; }
+h1 { 
+    color: #d4af37; /* عنوان ذهبي */
+    margin-bottom: 20px;
+}
+
+.input-group { 
+    display: flex; 
+    gap: 10px; 
+    width: 100%;
+}
 
 input[type="text"], input[type="number"], input[type="password"] {
     width: 100%;
@@ -31,70 +44,74 @@ input[type="text"], input[type="number"], input[type="password"] {
     border-radius: 8px;
     color: white;
     box-sizing: border-box;
+    outline: none;
+    transition: 0.3s;
 }
 
-/* --- تطوير شكل علامة الصح --- */
+/* تغيير لون حدود الإدخال عند التركيز */
+input:focus {
+    border-color: #d4af37;
+}
+
 .selection-group {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     background: #262626;
     padding: 15px;
     border-radius: 8px;
-    margin: 10px 0;
+    margin: 15px 0;
 }
 
 .option-container {
-    display: block;
+    display: flex;
+    align-items: center;
     position: relative;
-    padding-right: 35px; /* مساحة للعلامة */
+    padding-right: 30px;
     cursor: pointer;
     font-size: 14px;
     user-select: none;
 }
 
-/* إخفاء دائرة الراديو الأصلية */
 .option-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
 
-/* المربع/الدائرة اللي هيظهر فيها الصح */
 .checkmark {
     position: absolute;
-    top: 0;
+    top: 50%;
     right: 0;
+    transform: translateY(-50%);
     height: 20px;
     width: 20px;
     background-color: #444;
-    border-radius: 4px; /* شكل مربع بزوايا دائرية */
+    border-radius: 4px;
     transition: 0.3s;
 }
 
-/* لون الخلفية لما يختار */
+/* تغيير لون الخلفية عند الاختيار للذهبي */
 .option-container input:checked ~ .checkmark {
-    background-color: #32cd32;
+    background-color: #d4af37;
 }
 
-/* رسم علامة الصح نفسها (تكون مخفية) */
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
 
-/* إظهار علامة الصح لما يختار */
 .option-container input:checked ~ .checkmark:after {
     display: block;
 }
 
-/* تصميم شكل علامة الصح (الخطين المائلين) */
 .option-container .checkmark:after {
-    left: 7px;
-    top: 3px;
+    left: 6px;
+    top: 2px;
     width: 5px;
     height: 10px;
-    border: solid black;
+    border: solid black; /* علامة الصح بالأسود لتظهر فوق الذهبي */
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
 }
@@ -102,15 +119,20 @@ input[type="text"], input[type="number"], input[type="password"] {
 .btn-submit {
     width: 100%;
     padding: 15px;
-    background: #32cd32;
+    /* زر ذهبي */
+    background: #d4af37;
     border: none;
     border-radius: 8px;
     font-weight: bold;
+    color: #000; /* نص أسود ليكون واضحاً */
     cursor: pointer;
     margin-top: 15px;
     transition: 0.3s;
 }
 
-.btn-submit:hover { background: #28a428; }
+.btn-submit:hover { 
+    background: #b8860b; /* ذهبي أغمق عند التمرير */
+    transform: scale(1.02);
+}
 
 .hidden { display: none; }
