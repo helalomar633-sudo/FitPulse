@@ -1,121 +1,136 @@
-/* الألوان الأساسية */
+/* الألوان المتطورة */
 :root {
-    --bg-color: #0f0f0f;
-    --card-bg: #1a1a1a;
-    --text-color: #ffffff;
-    --primary-color: #32cd32; /* الأخضر الفسفوري */
-    --accent-color: #ffcc00; /* أصفر للراحة */
-}
-
-/* الوضع المضيء */
-.light-mode {
-    --bg-color: #f4f4f4;
-    --card-bg: #ffffff;
-    --text-color: #1a1a1a;
-    --primary-color: #28a428;
+    --bg-main: #0a0a0a; /* أسود أعمق */
+    --bg-card: #161616; /* لون الكروت */
+    --text-main: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --primary: #32cd32; /* أخضر فسفوري */
+    --accent: #ffcc00; /* أصفر للراحة */
+    --border: #2a2a2a;
 }
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    display: flex;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
     height: 100vh;
-    transition: 0.3s;
-    direction: rtl;
-}
-
-/* القائمة الجانبية */
-.sidebar {
-    width: 260px;
-    background-color: var(--card-bg);
-    border-left: 2px solid var(--primary-color);
     display: flex;
-    flex-direction: column;
-    padding: 20px 0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    direction: rtl; /* للغة العربية */
+    overflow: hidden;
 }
 
-.sidebar h2 {
+/* شاشة التسجيل (Auth Section) */
+#auth-section {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-main);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000; transition: 0.5s;
+}
+
+.auth-card {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--primary);
+    box-shadow: 0 10px 30px rgba(50, 205, 50, 0.2);
+    width: 100%; max-width: 400px;
     text-align: center;
-    color: var(--primary-color);
-    margin-bottom: 30px;
+}
+
+/* لوحة التحكم الرئيسية (App Interface) */
+#app-interface { display: flex; width: 100%; height: 100%; }
+
+/* القائمة الجانبية الأنيقة (Sidebar) */
+.sidebar {
+    width: 280px;
+    background-color: var(--bg-card);
+    border-left: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    padding: 30px 0;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.5);
+}
+
+.sidebar-header {
+    text-align: center; color: var(--primary);
+    font-size: 28px; font-weight: bold;
+    margin-bottom: 40px; letter-spacing: 1px;
 }
 
 .menu-item {
-    padding: 15px 25px;
+    padding: 18px 30px;
+    color: var(--text-muted);
     cursor: pointer;
-    transition: 0.3s;
-    border-bottom: 1px solid #333;
-    font-weight: 600;
+    transition: all 0.3s ease;
+    border-right: 4px solid transparent; /* لعلامة الاختيار */
+    font-weight: 600; font-size: 16px;
+    display: flex; align-items: center; gap: 10px;
 }
 
-.menu-item:hover, .menu-item.active {
-    background-color: var(--primary-color);
-    color: #000;
+.menu-item:hover {
+    background-color: rgba(50, 205, 50, 0.1);
+    color: var(--primary);
 }
 
-/* المحتوى الرئيسي */
-.main-content {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto;
+.menu-item.active {
+    background-color: rgba(50, 205, 50, 0.15);
+    color: var(--primary);
+    border-right: 4px solid var(--primary);
 }
 
-.tab-content { display: none; animation: fadeIn 0.5s; }
+/* منطقة المحتوى */
+.main-content { flex: 1; padding: 40px; overflow-y: auto; }
+
+h1 { color: var(--text-main); margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+
+.tab-content { display: none; animation: fadeIn 0.4s ease-out; }
 .tab-content.active { display: block; }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+/* كروت التمرين والتغذية */
 .card {
-    background-color: var(--card-bg);
-    padding: 25px;
+    background-color: var(--bg-card);
+    padding: 30px;
     border-radius: 15px;
-    margin-bottom: 20px;
-    border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+    transition: 0.3s;
 }
 
-/* التايمر وحاسبة السعرات */
-.timer-display {
-    font-size: 60px;
-    font-weight: bold;
-    text-align: center;
-    color: var(--primary-color);
-    margin: 20px 0;
-}
+.card:hover { border-color: #444; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
+.card-title { color: var(--primary); font-size: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;}
+
+/* العناصر التفاعلية */
 input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    background: #262626;
-    border: 1px solid #444;
-    color: white;
-    border-radius: 8px;
+    width: 100%; padding: 15px; margin: 10px 0;
+    background: var(--bg-main); border: 1px solid var(--border);
+    color: var(--text-main); border-radius: 8px; font-size: 16px;
+    box-sizing: border-box; /* لضمان الحجم الصحيح */
 }
+
+input:focus { border-color: var(--primary); outline: none; }
 
 .btn-submit {
-    width: 100%;
-    padding: 15px;
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 16px;
+    width: 100%; padding: 16px;
+    background-color: var(--primary); color: #000;
+    border: none; border-radius: 8px;
+    font-weight: bold; font-size: 17px;
+    cursor: pointer; transition: 0.2s;
+    margin-top: 15px;
 }
 
-.btn-submit:hover { opacity: 0.9; }
+.btn-submit:hover { background-color: #28a428; transform: translateY(-2px); }
 
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    margin: 20px 0;
+/* الـ GIF المتحرك والتايمر */
+.gif-container {
+    width: 100%; max-width: 400px; margin: 20px auto;
+    border-radius: 10px; overflow: hidden; border: 2px solid var(--border);
 }
+.gif-container img { width: 100%; height: auto; display: block; }
 
-.video-container iframe {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px;
-}
+.timer-display { font-size: 70px; font-weight: bold; text-align: center; color: var(--primary); margin: 20px 0; font-family: monospace; }
+.stars { color: var(--accent); font-size: 22px; }
+
+.hidden { display: none !important; }
