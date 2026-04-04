@@ -8,6 +8,14 @@
     <style>
         .hidden { display: none; }
         #welcome-screen { text-align: center; padding: 40px; }
+        .logout-link { 
+            display: block; 
+            margin-top: 20px; 
+            color: #d4af37; 
+            text-decoration: underline; 
+            cursor: pointer; 
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -41,7 +49,7 @@
                 <label class="option-container"> لياقة <input type="radio" name="goal"> <span class="checkmark"></span> </label>
             </div>
 
-            <input type="password" placeholder="كلمة السر (8 خانات أو أكثر)" required minlength="8">
+            <input type="password" id="password" placeholder="كلمة السر (8 خانات أو أكثر)" required minlength="8">
 
             <button type="submit" class="btn-submit">إنشاء الحساب</button>
         </form>
@@ -51,22 +59,47 @@
     <div id="welcome-screen" class="signup-card hidden">
         <h1 style="font-size: 50px;">💪</h1>
         <h2 id="user-greeting"></h2>
-        <p>تم حفظ بياناتك.. استعد للتمارين!</p>
-        <button class="btn-submit" onclick="location.reload()">العودة للرئيسية</button>
+        <p>أهلاً بك مجدداً، بياناتك محفوظة وجاهزة للعمل!</p>
+        <button class="btn-submit">ابدأ التمرين الآن</button>
+        <span class="logout-link" onclick="logout()">تسجيل الخروج (مسح البيانات)</span>
     </div>
 
     <script>
+        // 1. فحص هل يوجد مستخدم مسجل مسبقاً عند تحميل الصفحة
+        window.onload = function() {
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+                showWelcomeScreen(savedName);
+            }
+        };
+
+        // 2. معالجة إرسال النموذج وحفظ البيانات
         document.getElementById('regForm').onsubmit = function(e) {
-            e.preventDefault(); // منع الصفحة من التحميل
-            const name = document.getElementById('fname').value;
+            e.preventDefault(); 
             
-            // إخفاء التسجيل وإظهار الترحيب
+            const name = document.getElementById('fname').value;
+            const pass = document.getElementById('password').value;
+
+            // حفظ البيانات في ذاكرة المتصفح
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userPass', pass);
+
+            showWelcomeScreen(name);
+        };
+
+        // وظيفة لإظهار شاشة الترحيب
+        function showWelcomeScreen(name) {
             document.getElementById('signup-card').classList.add('hidden');
             document.getElementById('welcome-screen').classList.remove('hidden');
-            
-            // كتابة اسم المستخدم
             document.getElementById('user-greeting').innerText = "عاش يا " + name + "!";
-        };
+        }
+
+        // وظيفة تسجيل الخروج ومسح الذاكرة
+        function logout() {
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userPass');
+            location.reload(); // إعادة تحميل الصفحة للعودة لشاشة التسجيل
+        }
     </script>
 
 </body>
