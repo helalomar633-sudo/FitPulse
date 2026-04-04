@@ -3,71 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitPulse - انضم إلينا</title>
+    <title>FitPulse - نظام الدخول</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* إضافة بسيطة لإخفاء العناصر */
         .hidden { display: none; }
-        #welcomeMessage { text-align: center; margin-top: 50px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat-box { background: #262626; padding: 15px; border-radius: 10px; border-bottom: 3px solid #32cd32; }
+        .advice-box { background: #32cd32; color: black; padding: 15px; border-radius: 10px; margin-top: 20px; font-weight: bold; }
+        .toggle-link { color: #32cd32; cursor: pointer; text-decoration: underline; font-size: 14px; display: block; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div class="signup-card" id="mainCard">
+    <!-- 1. شاشة تسجيل حساب جديد (لأول مرة) -->
+    <div class="signup-card" id="signup-section">
         <h1>إنشاء حساب جديد</h1>
-        <p>ادخل بياناتك لبدء رحلة التغيير</p>
-
-        <form id="registrationForm" onsubmit="handleSignup(event)">
+        <form id="regForm">
             <div class="input-group">
-                <input type="text" id="firstName" placeholder="الاسم الأول" required>
-                <input type="text" placeholder="اسم العائلة" required>
+                <input type="text" id="reg-fname" placeholder="الاسم الأول" required>
+                <input type="text" id="reg-lname" placeholder="اسم العائلة" required>
             </div>
-
             <div class="input-group">
-                <input type="number" placeholder="الوزن (كجم)" required>
-                <input type="number" placeholder="الطول (سم)" required>
+                <input type="number" id="reg-weight" placeholder="الوزن (كجم)" required>
+                <input type="number" id="reg-height" placeholder="الطول (سم)" required>
             </div>
-
-            <label>مكان التمرين:</label>
+            <label>مكان التمرين والهدف:</label>
             <div class="selection-group">
-                <label class="option-container"> الجيم <input type="radio" name="place" value="gym" required> <span class="checkmark"></span> </label>
-                <label class="option-container"> البيت <input type="radio" name="place" value="home"> <span class="checkmark"></span> </label>
+                <label class="option-container"> جيم <input type="radio" name="place" value="جيم" required> <span class="checkmark"></span></label>
+                <label class="option-container"> بيت <input type="radio" name="place" value="بيت"> <span class="checkmark"></span></label>
             </div>
-
-            <label>هدفك الرياضي:</label>
-            <div class="selection-group">
-                <label class="option-container"> تخسيس <input type="radio" name="goal" value="loss" required> <span class="checkmark"></span> </label>
-                <label class="option-container"> تضخيم <input type="radio" name="goal" value="bulk"> <span class="checkmark"></span> </label>
-                <label class="option-container"> لياقة <input type="radio" name="goal" value="fitness"> <span class="checkmark"></span> </label>
-            </div>
-
-            <!-- تعديل كلمة السر لتكون سهلة (8 خانات أي نوع) -->
-            <input type="password" placeholder="كلمة السر (8 خانات أو أكثر)" required minlength="8">
-
-            <button type="submit" class="btn-submit">إنشاء الحساب</button>
+            <input type="password" id="reg-pass" placeholder="اختر كلمة سر (8 خانات)" required minlength="8">
+            <button type="submit" class="btn-submit">تسجيل وحفظ البيانات</button>
+            <span class="toggle-link" onclick="showLogin()">لديك حساب بالفعل؟ سجل دخولك</span>
         </form>
     </div>
 
-    <!-- صفحة الترحيب التي ستظهر بعد الضغط على الزر -->
-    <div id="welcomePage" class="signup-card hidden">
-        <h1 id="welcomeText"></h1>
-        <p>تم تجهيز خطتك بناءً على بياناتك.</p>
-        <button class="btn-submit" onclick="location.reload()">تسجيل خروج</button>
+    <!-- 2. شاشة تسجيل الدخول (للمشتركين) -->
+    <div class="signup-card hidden" id="login-section">
+        <h1>تسجيل دخول</h1>
+        <form id="loginForm">
+            <input type="text" id="login-fname" placeholder="الاسم الأول" required>
+            <input type="password" id="login-pass" placeholder="كلمة السر" required>
+            <button type="submit" class="btn-submit">دخول</button>
+            <span class="toggle-link" onclick="showSignup()">ليس لديك حساب؟ اشترك الآن</span>
+        </form>
+    </div>
+
+    <!-- 3. لوحة تحكم البطل -->
+    <div id="dashboard" class="signup-card hidden">
+        <h2 id="user-greeting"></h2>
+        <div class="stats-grid">
+            <div class="stat-box"> <small>الوزن</small> <div id="show-weight"></div> </div>
+            <div class="stat-box"> <small>الطول</small> <div id="show-height"></div> </div>
+        </div>
+        <div id="advice" class="advice-box"></div>
+        <button class="btn-submit" style="background: #444;" onclick="logout()">تسجيل خروج</button>
     </div>
 
     <script>
-        function handleSignup(event) {
-            event.preventDefault(); // منع الصفحة من التحديث
-            const name = document.getElementById('firstName').value;
+        // دالة لعرض شاشة الدخول
+        function showLogin() {
+            document.getElementById('signup-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+        }
+
+        // دالة لعرض شاشة الاشتراك
+        function showSignup() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('signup-section').classList.remove('hidden');
+        }
+
+        // 1. معالجة الاشتراك الجديد وحفظ البيانات
+        document.getElementById('regForm').onsubmit = function(e) {
+            e.preventDefault();
+            const userData = {
+                fname: document.getElementById('reg-fname').value,
+                lname: document.getElementById('reg-lname').value,
+                weight: document.getElementById('reg-weight').value,
+                height: document.getElementById('reg-height').value,
+                pass: document.getElementById('reg-pass').value
+            };
             
-            // إخفاء الكارت القديم وإظهار كارت الترحيب
-            document.getElementById('mainCard').classList.add('hidden');
-            document.getElementById('welcomePage').classList.remove('hidden');
+            // حفظ الكائن في ذاكرة المتصفح
+            localStorage.setItem('user_' + userData.fname, JSON.stringify(userData));
+            alert("تم إنشاء حسابك بنجاح يا " + userData.fname);
+            showLogin();
+        };
+
+        // 2. معالجة تسجيل الدخول
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('login-fname').value;
+            const pass = document.getElementById('login-pass').value;
             
-            // وضع اسم المستخدم في رسالة الترحيب
-            document.getElementById('welcomeText').innerText = "عاش يا " + name + "! 💪";
+            const storedData = localStorage.getItem('user_' + name);
+            
+            if (storedData) {
+                const user = JSON.parse(storedData);
+                if (user.pass === pass) {
+                    showDashboard(user);
+                } else {
+                    alert("كلمة السر خاطئة!");
+                }
+            } else {
+                alert("المستخدم غير موجود، يرجى الاشتراك أولاً.");
+            }
+        };
+
+        // 3. عرض لوحة التحكم
+        function showDashboard(user) {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('signup-section').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            document.getElementById('user-greeting').innerText = "أهلاً بك يا بطل، " + user.fname;
+            document.getElementById('show-weight').innerText = user.weight + " كجم";
+            document.getElementById('show-height').innerText = user.height + " سم";
+            document.getElementById('advice').innerText = "استمر في التدريب، هدفك يقترب!";
+        }
+
+        function logout() {
+            location.reload();
         }
     </script>
-
 </body>
 </html>
