@@ -16,6 +16,14 @@
             cursor: pointer; 
             font-size: 14px;
         }
+        /* إضافة تسميات العناوين فوق مجموعات الاختيار */
+        label.section-title {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #d4af37;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -36,17 +44,25 @@
                 <input type="number" placeholder="الطول (سم)" required>
             </div>
 
-            <label>مكان التمرين:</label>
+            <label class="section-title">مكان التمرين:</label>
             <div class="selection-group">
-                <label class="option-container"> الجيم <input type="radio" name="place" required> <span class="checkmark"></span> </label>
-                <label class="option-container"> البيت <input type="radio" name="place"> <span class="checkmark"></span> </label>
+                <label class="option-container"> الجيم <input type="radio" name="place" value="الجيم" required> <span class="checkmark"></span> </label>
+                <label class="option-container"> البيت <input type="radio" name="place" value="البيت"> <span class="checkmark"></span> </label>
             </div>
 
-            <label>هدفك الرياضي:</label>
+            <!-- القسم الجديد: المستوى الرياضي -->
+            <label class="section-title">مستواك الحالي:</label>
             <div class="selection-group">
-                <label class="option-container"> تخسيس <input type="radio" name="goal" required> <span class="checkmark"></span> </label>
-                <label class="option-container"> تضخيم <input type="radio" name="goal"> <span class="checkmark"></span> </label>
-                <label class="option-container"> لياقة <input type="radio" name="goal"> <span class="checkmark"></span> </label>
+                <label class="option-container"> مبتدئ <input type="radio" name="level" value="مبتدئ" required> <span class="checkmark"></span> </label>
+                <label class="option-container"> متوسط <input type="radio" name="level" value="متوسط"> <span class="checkmark"></span> </label>
+                <label class="option-container"> محترف <input type="radio" name="level" value="محترف"> <span class="checkmark"></span> </label>
+            </div>
+
+            <label class="section-title">هدفك الرياضي:</label>
+            <div class="selection-group">
+                <label class="option-container"> تخسيس <input type="radio" name="goal" value="تخسيس" required> <span class="checkmark"></span> </label>
+                <label class="option-container"> تضخيم <input type="radio" name="goal" value="تضخيم"> <span class="checkmark"></span> </label>
+                <label class="option-container"> لياقة <input type="radio" name="goal" value="لياقة"> <span class="checkmark"></span> </label>
             </div>
 
             <input type="password" id="password" placeholder="كلمة السر (8 خانات أو أكثر)" required minlength="8">
@@ -55,50 +71,50 @@
         </form>
     </div>
 
-    <!-- شاشة الترحيب (مخفية في البداية) -->
+    <!-- شاشة الترحيب -->
     <div id="welcome-screen" class="signup-card hidden">
         <h1 style="font-size: 50px;">💪</h1>
         <h2 id="user-greeting"></h2>
-        <p>أهلاً بك مجدداً، بياناتك محفوظة وجاهزة للعمل!</p>
+        <p id="user-info-summary"></p>
         <button class="btn-submit">ابدأ التمرين الآن</button>
         <span class="logout-link" onclick="logout()">تسجيل الخروج (مسح البيانات)</span>
     </div>
 
     <script>
-        // 1. فحص هل يوجد مستخدم مسجل مسبقاً عند تحميل الصفحة
         window.onload = function() {
             const savedName = localStorage.getItem('userName');
+            const savedLevel = localStorage.getItem('userLevel');
             if (savedName) {
-                showWelcomeScreen(savedName);
+                showWelcomeScreen(savedName, savedLevel);
             }
         };
 
-        // 2. معالجة إرسال النموذج وحفظ البيانات
         document.getElementById('regForm').onsubmit = function(e) {
             e.preventDefault(); 
             
             const name = document.getElementById('fname').value;
             const pass = document.getElementById('password').value;
+            // جلب المستوى المختار
+            const level = document.querySelector('input[name="level"]:checked').value;
 
-            // حفظ البيانات في ذاكرة المتصفح
+            // حفظ البيانات
             localStorage.setItem('userName', name);
             localStorage.setItem('userPass', pass);
+            localStorage.setItem('userLevel', level);
 
-            showWelcomeScreen(name);
+            showWelcomeScreen(name, level);
         };
 
-        // وظيفة لإظهار شاشة الترحيب
-        function showWelcomeScreen(name) {
+        function showWelcomeScreen(name, level) {
             document.getElementById('signup-card').classList.add('hidden');
             document.getElementById('welcome-screen').classList.remove('hidden');
             document.getElementById('user-greeting').innerText = "عاش يا " + name + "!";
+            document.getElementById('user-info-summary').innerText = "مستواك الحالي: " + (level || "غير محدد") + ". استعد للتمارين!";
         }
 
-        // وظيفة تسجيل الخروج ومسح الذاكرة
         function logout() {
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userPass');
-            location.reload(); // إعادة تحميل الصفحة للعودة لشاشة التسجيل
+            localStorage.clear(); // مسح كل البيانات المحفوظة
+            location.reload();
         }
     </script>
 
