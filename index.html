@@ -3,101 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitPulse Pro - لوحة التحكم</title>
+    <title>FitPulse Pro - المدرب الشخصي</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- القائمة الجانبية -->
-    <div class="sidebar">
-        <h2>FitPulse 💪</h2>
-        <div class="menu-item active" onclick="openTab(event, 'workouts')">1. التمارين</div>
-        <div class="menu-item" onclick="openTab(event, 'nutrition')">2. حاسبة السعرات</div>
-        <div class="menu-item" onclick="openTab(event, 'progress')">3. التقدم</div>
-        <div class="menu-item" onclick="openTab(event, 'reminders')">4. تذكيرات</div>
-        <div class="menu-item" onclick="openTab(event, 'library')">5. المكتبة المحلية</div>
-        <div class="menu-item" onclick="openTab(event, 'profile')">6. الملف الشخصي</div>
-        <div class="menu-item" onclick="openTab(event, 'settings')">7. الإعدادات</div>
+    
+<div id="auth-section">
+        <div class="auth-card">
+            <h1 style="border:none; color:var(--primary); font-size:35px; margin-bottom:10px;">FitPulse</h1>
+            <p style="color:var(--text-muted); margin-bottom:30px;">ادخل بياناتك لبدء الرحلة</p>
+            <form id="regForm">
+                <input type="text" id="reg-name" placeholder="الاسم الأول" required>
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="reg-weight" placeholder="الوزن (كجم)" required>
+                    <input type="number" id="reg-height" placeholder="الطول (سم)" required>
+                </div>
+                <input type="password" id="reg-pass" placeholder="كلمة السر" required minlength="6">
+                <button type="submit" class="btn-submit">إنشاء الحساب ودخول اللوحة</button>
+            </form>
+        </div>
     </div>
 
-    <!-- المحتوى -->
-    <div class="main-content">
+    
+<div id="app-interface" class="hidden">
         
-        <!-- قسم التمارين -->
-        <div id="workouts" class="tab-content active">
-            <h1>تمارين اليوم (تنشيف/ضخامة)</h1>
-            <div class="card">
-                <h3>تمرين الضغط (Pushups) ⭐⭐⭐⭐⭐</h3>
-                <div class="video-container">
-                    <!-- فيديو يوتيوب ينتهي عند 50 ثانية -->
-                    <iframe src="https://www.youtube.com/embed/iodG8K6UToQ?end=50" frameborder="0"></iframe>
+        <div class="sidebar">
+            <div class="sidebar-header">FitPulse 💪</div>
+            <div class="menu-item active" onclick="openTab(event, 'workouts')">🏋️ التمارين</div>
+            <div class="menu-item" onclick="openTab(event, 'nutrition')">🍎 حاسبة السعرات</div>
+            <div class="menu-item" onclick="openTab(event, 'progress')">📈 التقدم</div>
+            <div class="menu-item" onclick="openTab(event, 'reminders')">🔔 تذكيرات</div>
+            <div class="menu-item" onclick="openTab(event, 'library')">📚 المكتبة المتحركة</div>
+            <div class="menu-item" onclick="openTab(event, 'profile')">👤 الملف الشخصي</div>
+            <div class="menu-item" onclick="openTab(event, 'settings')">⚙️ الإعدادات</div>
+        </div>
+
+        <div class="main-content">
+            
+            <div id="workouts" class="tab-content active">
+                <h1>تمارين اليوم <span style="font-size:16px; color:var(--text-muted);">(4 مجاميع × 60 ثانية)</span></h1>
+                <div class="card">
+                    <div class="card-title">
+                        <span>تمرين الضغط (Pushups)</span>
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    
+                    <div class="gif-container">
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzdlOWQ4ZTVmNTczODMxNmYwZGI5YmEzZGEzODU4ODMxM2YxZDEyMSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3o7TKrEESp2w8Qv0y4/giphy.gif" alt="Pushup GIF">
+                    </div>
+
+                    <div id="timer-label" style="text-align: center; font-weight: bold; color:var(--text-muted);">جاهز للبدء؟</div>
+                    <div class="timer-display" id="timer">60</div>
+                    <button class="btn-submit" onclick="startWorkout()" id="timer-btn">ابدأ المجموعة الأولى 🚀</button>
+                    <p id="set-count" style="text-align: center; margin-top: 15px; color:var(--text-muted);">المجموعة: 1 / 4</p>
                 </div>
-                <div id="timer-label" style="text-align: center; font-weight: bold;">جاهز؟</div>
-                <div class="timer-display" id="timer">60</div>
-                <button class="btn-submit" onclick="startWorkout()">ابدأ المجموعة الآن 🚀</button>
-                <p id="set-count" style="text-align: center; margin-top: 10px;">المجموعة: 1 / 4</p>
             </div>
-        </div>
 
-        <!-- حاسبة السعرات -->
-        <div id="nutrition" class="tab-content">
-            <h1>حاسبة السعرات الذكية 🍎</h1>
-            <div class="card">
-                <input type="number" id="w" placeholder="الوزن (كجم)">
-                <input type="number" id="h" placeholder="الطول (سم)">
-                <input type="number" id="a" placeholder="العمر">
-                <button class="btn-submit" onclick="calcCalories()">احسب احتياجي اليومي</button>
-                <h2 id="res" style="text-align: center; margin-top: 20px; color: var(--primary-color);"></h2>
+            <div id="nutrition" class="tab-content">
+                <h1>حاسبة السعرات الذكية 🍎</h1>
+                <div class="card">
+                    <p style="color:var(--text-muted); margin-bottom:20px;">احسب احتياجك اليومي من الطاقة (BMR + النشاط).</p>
+                    <input type="number" id="calc-w" placeholder="الوزن الحالي (كجم)">
+                    <input type="number" id="calc-h" placeholder="الطول (سم)">
+                    <input type="number" id="calc-a" placeholder="العمر">
+                    <button class="btn-submit" onclick="calcCalories()">احسب احتياجي اليومي</button>
+                    <div id="cal-result" class="hidden" style="margin-top:30px; text-align:center;">
+                        <h2 style="color:var(--primary);">أنت تحتاج إلى:</h2>
+                        <span id="cal-num" style="font-size:40px; font-weight:bold; color:var(--primary);"></span>
+                        <span style="font-size:20px; color:var(--primary);">سعرة حرارية يومياً</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- الإعدادات (الوضع الليلي) -->
-        <div id="settings" class="tab-content">
-            <h1>الإعدادات ⚙️</h1>
-            <div class="card">
-                <h3>تخصيص المظهر</h3>
-                <button class="btn-submit" onclick="toggleTheme()">تبديل الوضع (ليلي / نهاري)</button>
+            <div id="progress" class="tab-content"><h1>📈 تابع تقدمك قريباً...</h1><div class="card">سيتم إضافة رسم بياني لوزنك هنا.</div></div>
+            <div id="reminders" class="tab-content"><h1>🔔 التذكيرات قريباً...</h1><div class="card">تذكيرات شرب الماء ومواعيد التمرين.</div></div>
+            <div id="library" class="tab-content"><h1>📚 مكتبة الـ GIFs</h1><div class="card">مجموعة كاملة من الصور المتحركة لجميع التمارين.</div></div>
+            <div id="profile" class="tab-content">
+                <h1>👤 الملف الشخصي</h1>
+                <div class="card">
+                    <p id="profile-info" style="font-size:18px; line-height:1.8;"></p>
+                    <button class="btn-submit" style="background:#ff4d4d; color:white;" onclick="logout()">تسجيل الخروج</button>
+                </div>
             </div>
+            <div id="settings" class="tab-content">
+                <h1>⚙️ الإعدادات</h1>
+                <div class="card">
+                    <h3>المظهر</h3>
+                    <p style="color:var(--text-muted);">قريباً: تبديل الوضع الليلي والنهاري وتغيير ألوان الواجهة.</p>
+                </div>
+            </div>
+
         </div>
-
-        <!-- الأقسام الباقية (للعرض فقط الآن) -->
-        <div id="progress" class="tab-content"><h1>📈 التقدم: قريباً</h1></div>
-        <div id="reminders" class="tab-content"><h1>🔔 تذكيرات: قريباً</h1></div>
-        <div id="library" class="tab-content"><h1>📚 المكتبة المحلية: فيديوهات مخزنة</h1></div>
-        <div id="profile" class="tab-content"><h1>👤 الملف الشخصي: بياناتك هنا</h1></div>
-
     </div>
 
     <script>
-        // التبديل بين القوائم
-        function openTab(evt, name) {
-            let i, content, items;
-            content = document.getElementsByClassName("tab-content");
-            for (i = 0; i < content.length; i++) content[i].classList.remove("active");
-            items = document.getElementsByClassName("menu-item");
-            for (i = 0; i < items.length; i++) items[i].classList.remove("active");
-            document.getElementById(name).classList.add("active");
+        // --- أولاً: نظام الدخول ---
+        document.getElementById('regForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const weight = document.getElementById('reg-weight').value;
+            const height = document.getElementById('reg-height').value;
+
+            // إخفاء صفحة التسجيل وإظهار اللوحة
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('app-interface').classList.remove('hidden');
+
+            // ملء بيانات الملف الشخصي
+            document.getElementById('profile-info').innerHTML = `<strong>الاسم:</strong> ${name}<br><strong>الوزن:</strong> ${weight} كجم<br><strong>الطول:</strong> ${height} سم`;
+        };
+
+        function logout() { location.reload(); }
+
+        // --- ثانياً: التبديل بين القوائم ---
+        function openTab(evt, tabName) {
+            let i, tabcontent, menuitems;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
+            
+            menuitems = document.getElementsByClassName("menu-item");
+            for (i = 0; i < menuitems.length; i++) menuitems[i].classList.remove("active");
+            
+            document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
 
-        // منطق التايمر (تمرين 60 + راحة 20)
+        // --- ثالثاً: التايمر الذكي ---
         let time = 60; let set = 1; let resting = false; let interval;
         function startWorkout() {
+            document.getElementById('timer-btn').classList.add('hidden'); // إخفاء الزرار أثناء العد
             clearInterval(interval);
             interval = setInterval(() => {
                 if (time <= 0) {
                     if (!resting && set < 4) {
-                        resting = true; time = 20;
-                        document.getElementById('timer').style.color = "#ffcc00";
+                        // راحة
+                        resting = true; time = 20; // 20 ثانية راحة
+                        document.getElementById('timer').style.color = "#ffcc00"; // أصفر
                         document.getElementById('timer-label').innerText = "وقت راحة (استعد)";
                     } else if (resting) {
+                        // تمرين
                         resting = false; set++; time = 60;
-                        document.getElementById('timer').style.color = "#32cd32";
+                        document.getElementById('timer').style.color = "#32cd32"; // أخضر
                         document.getElementById('timer-label').innerText = "المجموعة رقم " + set;
                         document.getElementById('set-count').innerText = "المجموعة: " + set + " / 4";
                     } else {
-                        clearInterval(interval); alert("بطل! خلصت التمرين");
-                        resetAll(); return;
+                        // نهاية
+                        clearInterval(interval); alert("بطل! خلصت التمرين بنجاح 💪");
+                        resetTimer(); return;
                     }
                 }
                 document.getElementById('timer').innerText = time;
@@ -105,19 +157,28 @@
             }, 1000);
         }
 
-        function resetAll() { time=60; set=1; resting=false; document.getElementById('timer').innerText="60"; }
-
-        // حاسبة السعرات
-        function calcCalories() {
-            let weight = document.getElementById('w').value;
-            let height = document.getElementById('h').value;
-            let age = document.getElementById('a').value;
-            let bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-            document.getElementById('res').innerText = "تحتاج " + Math.round(bmr * 1.2) + " سعرة حرارية يومياً.";
+        function resetTimer() {
+            time = 60; set = 1; resting = false;
+            document.getElementById('timer').innerText = "60";
+            document.getElementById('timer').style.color = "#32cd32";
+            document.getElementById('timer-label').innerText = "جاهز للبدء؟";
+            document.getElementById('set-count').innerText = "المجموعة: 1 / 4";
+            document.getElementById('timer-btn').classList.remove('hidden');
+            document.getElementById('timer-btn').innerText = "ابدأ المجموعة الأولى 🚀";
         }
 
-        // الوضع الليلي
-        function toggleTheme() { document.body.classList.toggle('light-mode'); }
+        // --- رابعاً: حاسبة السعرات ---
+        function calcCalories() {
+            let w = document.getElementById('calc-w').value;
+            let h = document.getElementById('calc-h').value;
+            let a = document.getElementById('calc-a').value;
+            // معادلة Mifflin-St Jeor للرجال
+            let bmr = (10 * w) + (6.25 * h) - (5 * a) + 5;
+            let total = Math.round(bmr * 1.3); // نشاط متوسط
+
+            document.getElementById('cal-num').innerText = total;
+            document.getElementById('cal-result').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
